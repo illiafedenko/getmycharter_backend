@@ -12,4 +12,7 @@ router.post('/signup', authController.signup);
 // Google Login
 router.post('/google', authController.google);
 
+//login by email
+router.post('/logout', authController.logout);
+
 module.exports = router;
