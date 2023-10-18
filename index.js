@@ -1,16 +1,30 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+const express = require("express");
+const bodyParser = require("body-parser");
+const http = require("http");
+const socketio = require("socket.io");
 
-require('dotenv').config();
+const app = http.createServer();
+const io = socketio(server);
+
+require("dotenv").config();
 const PORT = process.env.PORT;
 
-// Set up the Express app
-const app = express();
+io.on("connection", (socket) => {
+  console.log("a user connected");
+  socket.on("message", (message) => {
+    console.log("message:", message);
+    io.emit("message", message);
+  });
+  socket.on("disconnect", () => {
+    console.log("a user disconnected");
+  });
+});
+
 app.use(bodyParser.json());
 
 // Routes
-const router = require('./app/routes');
-app.use('/api/v1/', router);
+const router = require("./app/routes");
+app.use("/api/v1/", router);
 
 // Start the server
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
