@@ -1,24 +1,25 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const http = require("http");
-const socketio = require("socket.io");
+const app = express();
+// const http = require("http");
+// const socketio = require("socket.io");
 
-const app = http.createServer();
-const io = socketio(server);
+// const app = http.createServer();
+// const io = socketio(server);
 
 require("dotenv").config();
 const PORT = process.env.PORT;
 
-io.on("connection", (socket) => {
-  console.log("a user connected");
-  socket.on("message", (message) => {
-    console.log("message:", message);
-    io.emit("message", message);
-  });
-  socket.on("disconnect", () => {
-    console.log("a user disconnected");
-  });
-});
+// io.on("connection", (socket) => {
+//   console.log("a user connected");
+//   socket.on("message", (message) => {
+//     console.log("message:", message);
+//     io.emit("message", message);
+//   });
+//   socket.on("disconnect", () => {
+//     console.log("a user disconnected");
+//   });
+// });
 
 app.use(bodyParser.json());
 

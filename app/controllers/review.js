@@ -14,7 +14,13 @@ exports.getAllReviews = async (req, res) => {
 exports.createReview = async (req, res) => {
   try {
     const { yachtID, userID, rating, comment, date } = req.body;
-    const review = await Review.create({ yachtID, userID, rating, comment, date });
+    const review = await Review.create({
+      yachtID,
+      userID,
+      rating,
+      comment,
+      date,
+    });
     res.status(201).json(review);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -27,7 +33,11 @@ exports.updateReview = async (req, res) => {
     const { id } = req.params;
     const { yachtID, userID, rating, comment, date } = req.body;
     const [, [updatedReview]] = await Review.update(
-        yachtID, userID, rating, comment, date
+      yachtID,
+      userID,
+      rating,
+      comment,
+      date,
       { returning: true, where: { id } }
     );
     res.json(updatedReview);
