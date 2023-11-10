@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-// const authRouter = require('./auth');
+const authRouter = require('./auth');
 const userRouter = require('./users');
 // const yachtRouter = require('./yacht');
 // const bookRouter = require('./book');
@@ -12,7 +12,7 @@ const userRouter = require('./users');
 // const termsRouter = require('./terms');
 // const FAQRouter = require('./FAQ');
 
-// router.use('/auth', authRouter);
+router.use('/auth', authRouter);
 router.use('/users', userRouter);
 // router.use('/yachts', yachtRouter);
 // router.use('/book', bookRouter);

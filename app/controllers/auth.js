@@ -1,5 +1,5 @@
 const googleOAuth = require("../services/OAuth/googleOAuth");
-const bcrypt = require("bcryptjs");
+const encrypt = require("../utils/encrypt");
 
 const User = require("../models/user");
 
@@ -24,53 +24,18 @@ exports.google = async (req, res) => {
   }
 };
 
-exports.signup = (req, res) => {
-  const { name, email, password } = req.body;
-
-  // Check for existing user
-  User.findOne({ email: email }).then((user) => {
-    if (user) return res.status(400).json("User already exists");
-
-    //New User created
-    const newUser = new User({
-      name,
-      email,
-      password,
-    });
-
-    //Password hashing
-    bcrypt.genSalt(12, (err, salt) =>
-      bcrypt.hash(newUser.password, salt, (err, hash) => {
-        if (err) throw err;
-
-        newUser.password = hash;
-        // Save user
-        newUser
-          .save()
-          .then(res.json("Successfully Registered"))
-          .catch((err) => console.log(err));
-      })
-    );
-  });
-};
-
-exports.login = (req, res) => {
+exports.login = async (req, res) => {
   const { email, password } = req.body;
+  const existingUser = await User.findOne({ where: { email } });
 
-  //check for existing user
-  User.findOne({ email }).then((user) => {
-    if (!user) return res.status(400).json("Incorrect Email or Password");
-
-    // Validate password
-    bcrypt.compare(password, user.password).then((isMatch) => {
-      if (!isMatch) return res.status(400).json("Incorrect Email or Password");
-
-      const sessUser = { id: user.id, name: user.name, email: user.email };
-      req.session.user = sessUser; // Auto saves session data in mongo store
-
-      res.json(sessUser); // sends cookie with sessionID automatically in response
-    });
-  });
+  if (!existingUser) return res.status(201).json("Incorrect Email or Password");
+  let comparedResult = await encrypt.comparePassword(password, existingUser.password);
+  if (comparedResult == true) {
+    const sessUser = { id: existingUser.id, name: existingUser.name, email: existingUser.email };
+    return res.status(200).json({ user: sessUser });
+  } else {
+    return res.status(201).json("Incorrect Email or Password");
+  }
 };
 
 exports.logout = (req, res) => {
