@@ -6,9 +6,6 @@ const router = express.Router();
 //login by email
 router.post('/login', authController.login);
 
-//Sign up by email
-router.post('/signup', authController.signup);
-
 // Google Login
 router.post('/google', authController.google);
 
