@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../config/database");
 
@@ -20,6 +20,10 @@ const User = sequelize.define("User", {
   password: {
     type: DataTypes.STRING,
     allowNull: false,
+  },
+  type: { // 0 is admin, 1 is user, 2 is owner
+    type: DataTypes.INTEGER,
+    allowNull: false 
   },
   joined: {
     type: DataTypes.DATEONLY,

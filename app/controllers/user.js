@@ -14,11 +14,16 @@ exports.getAllUsers = async (req, res) => {
 // Create a new user
 exports.createUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, type } = req.body;
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser == null) {
       const hashedPassword = await encrypt.encryptPassword(password);
-      const user = await User.create({ name, email, password: hashedPassword });
+      const user = await User.create({
+        name,
+        email,
+        password: hashedPassword,
+        type,
+      });
       res.status(200).json(user);
     } else {
       res.status(201).json({ message: "email repeat" });
@@ -32,10 +37,10 @@ exports.createUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, email, password } = req.body;
+    const { name, email, password, type } = req.body;
     const hashedPassword = await encrypt.encryptPassword(password);
     const [, [updatedUser]] = await User.update(
-      { name, email, password: hashedPassword },
+      { name, email, password: hashedPassword, type },
       { returning: true, where: { id } }
     );
     res.status(200).json(updatedUser);
