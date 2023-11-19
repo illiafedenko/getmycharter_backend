@@ -1,8 +1,18 @@
 const Book = require("../models/book");
 
-// Retrieve all books
-exports.getAllBooks = async (req, res) => {
+// Retrieve books
+exports.getBooks = async (req, res) => {
   try {
+    const {
+      id,
+      userID,
+      status,
+    } = req.body;
+    const condition = {};
+    if (id) condition.id = id;
+    if (id) condition.userID = userID;
+    if (id) condition.status = status;
+
     const books = await Book.findAll();
     res.json(books);
   } catch (error) {
@@ -13,8 +23,15 @@ exports.getAllBooks = async (req, res) => {
 // Create a new book
 exports.createBook = async (req, res) => {
   try {
-    const { yachtID, userID, date, duration, status } = req.body;
-    const book = await Book.create({ yachtID, userID, date, duration, status });
+    const { yachtID, userID, date, time, duration, status } = req.body;
+    const book = await Book.create({
+      yachtID,
+      userID,
+      date,
+      time,
+      duration,
+      status,
+    });
     res.status(201).json(book);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -25,10 +42,10 @@ exports.createBook = async (req, res) => {
 exports.updateBook = async (req, res) => {
   try {
     const { id } = req.params;
-    const { yachtID, userID, date, duration, status } = req.body;
-    const [, [updatedBook]] = await Book.update(
-        yachtID, userID, date, duration, status,
-      { returning: true, where: { id } }
+    const { yachtID, userID, date, time, duration, status } = req.body;
+    const updatedBook = await Book.update(
+      { yachtID, userID, date, time, duration, status },
+      { where: { id } }
     );
     res.json(updatedBook);
   } catch (error) {

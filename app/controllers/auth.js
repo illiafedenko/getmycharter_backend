@@ -27,7 +27,6 @@ exports.google = async (req, res) => {
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   const existingUser = await User.findOne({ where: { email } });
-
   if (!existingUser)
     return res.status(201).json({ message: "Incorrect Email or Password" });
   let comparedResult = await encrypt.comparePassword(
