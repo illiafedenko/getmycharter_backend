@@ -1,6 +1,10 @@
 const Yacht = require("../models/yacht");
 const YachtInfo = require("../models/yachtInfo");
+<<<<<<< HEAD
 const Favorite = require("../models/favourite");
+=======
+
+>>>>>>> 53c3fd088b7d4acee12aab3aa99771ebecb55c85
 // Retrieve all yachts
 exports.getAllYachts = async (req, res) => {
   try {
@@ -52,7 +56,11 @@ exports.getAllYachts = async (req, res) => {
 
     const yachts = await Yacht.findAll({
       where: condition,
+<<<<<<< HEAD
       include: [YachtInfo, Favorite],
+=======
+      include: [YachtInfo],
+>>>>>>> 53c3fd088b7d4acee12aab3aa99771ebecb55c85
       order,
     });
     res.json(yachts);
