@@ -1,4 +1,6 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, TIME } = require("sequelize");
+const Sequelize = require("sequelize");
+
 const sequelize = require("../../config/database");
 
 const Book = sequelize.define("Book", {
@@ -12,11 +14,15 @@ const Book = sequelize.define("Book", {
     allowNull: false,
   },
   userID: {
-    type: DataTypes.UUID,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   date: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+  },
+  time: {
+    type: DataTypes.TIME,
     allowNull: false,
   },
   duration: {
@@ -24,7 +30,8 @@ const Book = sequelize.define("Book", {
     allowNull: false,
   },
   status: {
-    type: DataTypes.BOOLEAN,
+    // 0 => request, 1 => approved, 2 => cancelled, 3 => completed
+    type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: false,
   },

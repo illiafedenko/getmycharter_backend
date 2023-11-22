@@ -3,7 +3,7 @@ const router = express.Router();
 const bookController = require('../controllers/book');
 
 // Retrieve all booking history
-router.get('/', bookController.getAllBooks);
+router.post('/get', bookController.getBooks);
 
 // Create a new booking
 router.post('/', bookController.createBook);

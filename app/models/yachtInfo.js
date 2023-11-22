@@ -1,33 +1,28 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../config/database");
-
-const Message = sequelize.define("Message", {
+const YachtInfo = sequelize.define("YachtInfo", {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
   },
-  senderID: {
-    type: DataTypes.UUID,
-    allowNull: false,
-  },
-  receiverID: {
-    type: DataTypes.UUID,
-    allowNull: false,
-  },
   content: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  time: {
-    type: DataTypes.DATE,
+  status: {
+    type: DataTypes.STRING,
+    defaultValue: null,
+  },
+  item: {
+    // 0 => image 1 => Feature, 2 => Allow, 3 => cancellation, 4 => booking option
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
-  status: {
-    type: DataTypes.BOOLEAN,
+  yachtID: {
+    type: DataTypes.UUID,
     allowNull: false,
-    defaultValue: false,
   },
 });
 
-module.exports = Message;
+module.exports = YachtInfo;

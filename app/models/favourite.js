@@ -1,20 +1,23 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../config/database');
+const User = require("./user");
 
-const Policy = sequelize.define('Policy', {
+const Favorite = sequelize.define('Favorite', {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true
   },
-  content: {
+  userID: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  updated: {
-    type: DataTypes.DATE,
+  yachtID: {
+    type: DataTypes.UUID,
     allowNull: false,
   }
 });
 
-module.exports = Policy;
+Favorite.belongsTo(User, { foreignKey: "userID" });
+
+module.exports = Favorite;

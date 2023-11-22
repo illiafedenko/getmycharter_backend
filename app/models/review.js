@@ -1,4 +1,4 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, Sequelize } = require("sequelize");
 const sequelize = require("../../config/database");
 
 const Review = sequelize.define("Review", {
@@ -25,7 +25,7 @@ const Review = sequelize.define("Review", {
   },
   date: {
     type: DataTypes.DATE,
-    allowNull: false,
+    defaultValue: Sequelize.NOW
   },
 });
 

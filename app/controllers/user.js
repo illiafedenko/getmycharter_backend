@@ -14,15 +14,13 @@ exports.getAllUsers = async (req, res) => {
 // Create a new user
 exports.createUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    const existingUser = await User.findOne({ where: { email } });
-    if (existingUser == null) {
-      const hashedPassword = await encrypt.encryptPassword(password);
-      const user = await User.create({ name, email, password: hashedPassword });
-      res.status(200).json(user);
-    } else {
-      res.status(201).json({ message: "email repeat" });
-    }
+    const { id, phone, type } = req.body;
+    const user = await User.create({
+      id,
+      phone: phone ? phone : null,
+      type,
+    });
+    res.status(200).json(user);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -32,13 +30,15 @@ exports.createUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, email, password } = req.body;
-    const hashedPassword = await encrypt.encryptPassword(password);
-    const [, [updatedUser]] = await User.update(
-      { name, email, password: hashedPassword },
-      { returning: true, where: { id } }
+    const { phone, type } = req.body;
+    const updatedUser = await User.update(
+      {
+        phone: phone ? phone : null,
+        type,
+      },
+      { where: { id } }
     );
-    res.status(200).json(updatedUser);
+    res.status(200).json({ status: 200 });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -49,7 +49,8 @@ exports.deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
     await User.destroy({ where: { id } });
-    res.status(200);
+    res.status(200).json({ status: 200 });
+
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

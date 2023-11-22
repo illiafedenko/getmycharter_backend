@@ -3,7 +3,7 @@ const router = express.Router();
 const yachtController = require('../controllers/yacht');
 
 // Retrieve all yachts
-router.get('/', yachtController.getAllYachts);
+router.post('/filter', yachtController.getAllYachts);
 
 // Create a new yacht
 router.post('/', yachtController.createYacht);
